@@ -31,9 +31,20 @@ return {
                 "gopls",
             },
             handlers = {
-                function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
+                function() -- default handler (optional)
+                    require("lspconfig").gopls.setup {
+                        capabilities = capabilities,
+                        cmd = {"gopls"},
+                        filetypes = { "go", "gomod", "gowork", "gotmpl" },
+                        settings = {
+                            gopls = {
+                                completeUnimported = true,
+                                usePlaceholders = true,
+                                analyses = {
+                                    unusedparams = true,
+                                },
+                            },
+                        },
                     }
                 end,
 
@@ -88,8 +99,8 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
             }, {
-                { name = 'buffer' },
-            })
+                    { name = 'buffer' },
+                })
         })
 
         vim.diagnostic.config({
